@@ -34,6 +34,7 @@
 #include "algorithm/whirlpoolx.h"
 #include "algorithm/lyra2re.h"
 #include "algorithm/pluck.h"
+#include "algorithm/midnight.h"
 
 #include "compat.h"
 
@@ -58,7 +59,8 @@ const char *algorithm_type_str[] = {
   "Neoscrypt",
   "WhirlpoolX",
   "Lyra2RE",
-  "Pluck"
+  "Pluck",
+  "Midnight"
 };
 
 void sha256(const unsigned char *message, unsigned int len, unsigned char *digest)
@@ -774,6 +776,8 @@ static algorithm_settings_t algos[] = {
   A_DARK("myriadcoin-groestl", myriadcoin_groestl_regenhash),
 #undef A_DARK
 
+  { "midnight", ALGO_MIDNIGHT, "", 256, 256, 256, 0, 0, 0xFF, 0xFFFFFFULL, 0x0000ffffUL, 0, 0, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, midnight_regenhash, queue_sph_kernel, gen_hash, NULL },
+
   { "twecoin", ALGO_TWE, "", 1, 1, 1, 0, 0, 0xFF, 0xFFFFULL, 0x0000ffffUL, 0, 0, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, twecoin_regenhash, queue_sph_kernel, sha256, NULL },
   { "maxcoin", ALGO_KECCAK, "", 1, 256, 1, 4, 15, 0x0F, 0xFFFFULL, 0x000000ffUL, 0, 0, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, maxcoin_regenhash, queue_maxcoin_kernel, sha256, NULL },
 
@@ -879,6 +883,7 @@ static const char *lookup_algorithm_alias(const char *lookup_alias, uint8_t *nfa
   ALGO_ALIAS("whirlpool", "whirlcoin");
   ALGO_ALIAS("Lyra2RE", "lyra2re");
   ALGO_ALIAS("lyra2", "lyra2re");
+  ALGO_ALIAS("bmw256", "midnight");
 
 #undef ALGO_ALIAS
 #undef ALGO_ALIAS_NF
